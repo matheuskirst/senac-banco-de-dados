@@ -1,14 +1,11 @@
-create table FormasPag (
+create table FormaPagamento (
 	Id int primary key,
-	Nome VARCHAR(30) not null
-)
+	Nome varchar(30) not null
+);
 
-INSERT INTO FormasPag (Id, Nome)
-values
+insert into FormaPagamento (Id, Nome) values 
 (1, 'Cartão de Crédito'),
 (2, 'Cartão de Débito'),
 (3, 'PIX'),
 (4, 'Boleto'),
 (5, 'Dinheiro');
-
-select * from FormasPag

@@ -12,27 +12,27 @@ values
 ('Curitiba', 'PR'),
 ('Fortaleza', 'CE')
 
-alter table Usuarios
+alter table Usuario
 add column CidadeId INT;
 
-select * from Usuarios
+select * from Usuario
 
-update Usuarios
+update Usuario
 set CidadeId = 3
 where Id = 1;
-update Usuarios
+update Usuario
 set CidadeId = 3
 where Id = 2;
-update Usuarios
+update Usuario
 set CidadeId = 2
 where Id = 3;
-update Usuarios
+update Usuario
 set CidadeId = 1
 where Id = 4;
-update Usuarios
+update Usuario
 set CidadeId = 3
 where Id = 5;
-update Usuarios
+update Usuario
 set CidadeId = 2
 where Id = 5;
 
@@ -42,6 +42,37 @@ u.Nome,
 u.Cpf,
 c.Nome as CidadeNome,
 c.Estado
-from Usuarios u
+from Usuario u
 left join Cidade c
 on u.CidadeId = c.Id
+
+select
+u.Id,
+u.Nome,
+u.Cpf,
+c.Nome as CidadeNome,
+c.Estado
+from Usuario u
+right join Cidade c
+on u.CidadeId = c.Id
+
+
+select
+u.Id,
+u.Nome,
+u.Cpf,
+c.Nome as CidadeNome,
+c.Estado
+from Usuario u
+inner join Cidade c
+on u.CidadeId = c.Id
+
+
+select
+	c.Nome as Cidade,
+	count(u.Id) as TotalUsuarios
+from Cidade c
+left join usuario u on c.Id = u.CidadeId
+group by c.Id
+
+
