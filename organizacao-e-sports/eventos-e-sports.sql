@@ -13,11 +13,17 @@ create table organizacao_eventos_e_sports.Equipes (
 	Nome VARCHAR(100) not null
 )
 
+create table organizacao_eventos_e_sports.Modalidades (
+	Id SERIAL primary key,
+	Nome VARCHAR(100) not null
+)
+
 create table organizacao_eventos_e_sports.Arenas (
 	Id SERIAL primary key,
 	Nome VARCHAR(100) not null,
 	Capacidade INT not null,
-	Modalidade VARCHAR(100) not null
+	ModalidadeId INT not null,
+	foreign key (ModalidadeId) references organizacao_eventos_e_sports.Modalidades(Id)
 )
 
 create table organizacao_eventos_e_sports.Partidas (
@@ -31,12 +37,17 @@ create table organizacao_eventos_e_sports.Partidas (
 	foreign key (Equipe2Id) references organizacao_eventos_e_sports.Equipes(Id)
 )
 
+create table organizacao_eventos_e_sports.CategoriasEmpresas (
+	Id SERIAL primary key,
+	Nome VARCHAR(100) not null
+)
 
 create table organizacao_eventos_e_sports.Patrocinadores (
 	Id SERIAL primary key,
 	Nome VARCHAR(100) not null,
-	Categoria VARCHAR(50) not null,
+	CategoriaId INT not null,
 	ValorInvestido DECIMAL(10, 2) not null
+	foreign key (CategoriaId) references organizacao_eventos_e_sports.CategoriasEmpresas(Id)
 )
 
 
@@ -110,20 +121,42 @@ FROM organizacao_eventos_e_sports.Jogadores j
 JOIN organizacao_eventos_e_sports.Equipes e
     ON j.EquipeId = e.Id;
 
+-- Modalidades (Jogos)
+INSERT INTO organizacao_eventos_e_sports.Modalidades (Nome) VALUES
+('League of Legends'),
+('Counter-Strike 2'),
+('Valorant'),
+('Dota 2'),
+('Rocket League'),
+('EA Sports FC 26'),
+('Overwatch 2'),
+('Rainbow Six Siege');
+
 -- Arenas
-INSERT INTO organizacao_eventos_e_sports.Arenas
-(Nome, Capacidade, Modalidade)
-VALUES
-('Arena Nexus', 5000, 'League of Legends'),
-('Cyber Stadium', 8000, 'Counter-Strike 2'),
-('Battle Dome', 12000, 'Valorant'),
-('E-Sports Coliseum', 15000, 'Dota 2'),
-('Digital Arena', 6000, 'Rainbow Six Siege'),
-('Phoenix Arena', 10000, 'Free Fire'),
-('Titan Gaming Center', 7000, 'Rocket League'),
-('Elite Esports Hall', 9000, 'Fortnite'),
-('Dragon Arena', 11000, 'Overwatch 2'),
-('Infinity Stadium', 20000, 'Multimodal');
+INSERT INTO organizacao_eventos_e_sports.Arenas (Nome, Capacidade, ModalidadeId) VALUES
+('Summoners Arena', 15000, 1),
+('Nexus Stadium', 12000, 1),
+
+('Bombsite Arena', 18000, 2),
+('Headshot Stadium', 14000, 2),
+
+('Spike Arena', 13000, 3),
+('Radiant Coliseum', 10000, 3),
+
+('Ancient Battleground', 11000, 4),
+('The International Dome', 20000, 4),
+
+('Supersonic Arena', 9000, 5),
+('Champions Field Stadium', 8500, 5),
+
+('Ultimate Team Arena', 7000, 6),
+('Virtual Football Center', 6500, 6),
+
+('Payload Arena', 8000, 7),
+('Hero Coliseum', 7500, 7),
+
+('Tactical Siege Arena', 9500, 8),
+('Operator Stadium', 9000, 8);
 
 SELECT *
 FROM organizacao_eventos_e_sports.Arenas
@@ -215,17 +248,41 @@ select s.Nome, s.Seguidores, p.Nome as Plataforma from organizacao_eventos_e_spo
 inner join organizacao_eventos_e_sports.Plataformas p
 on s.PlataformaId = p.Id
 
+-- Categorias de Empresas
+INSERT INTO organizacao_eventos_e_sports.CategoriasEmpresas (Nome) VALUES
+('Hardware'),
+('Periféricos'),
+('Energia e Bebidas'),
+('Telecomunicações'),
+('Tecnologia'),
+('Streaming'),
+('Vestuário Gamer'),
+('Bancos e Fintechs');
+
 -- Patrocinadores
-INSERT INTO organizacao_eventos_e_sports.Patrocinadores (Nome, Categoria, ValorInvestido)
-VALUES
-('Red Bull', 'Bebidas Energéticas', 500000.00),
-('Intel', 'Hardware', 1200000.00),
-('Logitech', 'Periféricos', 750000.00),
-('HyperX', 'Periféricos', 650000.00),
-('Razer', 'Periféricos', 800000.00),
-('NVIDIA', 'Hardware', 1500000.00),
-('Samsung', 'Tecnologia', 900000.00),
-('Claro', 'Telecomunicações', 700000.00),
-('Banco Inter', 'Serviços Financeiros', 550000.00),
-('Monster Energy', 'Bebidas Energéticas', 450000.00);
+INSERT INTO organizacao_eventos_e_sports.Patrocinadores
+(Nome, CategoriaId, ValorInvestido) VALUES
+('NVIDIA', 1, 500000.00),
+('AMD', 1, 350000.00),
+
+('Logitech G', 2, 250000.00),
+('Razer', 2, 275000.00),
+
+('Red Bull', 3, 600000.00),
+('Monster Energy', 3, 450000.00),
+
+('Vivo', 4, 400000.00),
+('Claro', 4, 380000.00),
+
+('Microsoft', 5, 700000.00),
+('Intel', 5, 550000.00),
+
+('Twitch', 6, 800000.00),
+('YouTube Gaming', 6, 650000.00),
+
+('FURIA Wear', 7, 150000.00),
+('LOUD Store', 7, 180000.00),
+
+('Nubank', 8, 300000.00),
+('PicPay', 8, 220000.00);
 
